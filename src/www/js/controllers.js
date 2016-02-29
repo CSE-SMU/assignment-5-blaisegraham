@@ -1,18 +1,21 @@
-angular.module('starter.controllers', []) //defining a new model | App.js is dependant on this file
+angular.module('starter.controllers', []) 
 
 .controller('AppCtrl', function($scope, $ionicModal, $timeout) {
 
 })
 
-.controller('SearchCtrl', function($scope, $state, $http, BeerData) {
-  $scope.form = {};
+.factory('BeerData', function() {
+  return {data: {}};
+})
 
-  $scope.search = function() {
-    
+.controller('SearchCtrl', function($scope, $state, $http, BeerData) {     
+  $scope.form = {};                                             
+
+  $scope.search = function() {                                         
     $http({
       method: 'GET',
-      url: 'https://salty-taiga-88147.herokuapp.com/beers',               // the link to my proxy
-      params: {                                                           // sets the GET params
+      url: 'https://salty-taiga-88147.herokuapp.com/beers',               
+      params: {                                                           
         name: $scope.form.name,
         hasLabels: $scope.form.labels,
         isOrganic: $scope.form.organic,
@@ -22,7 +25,6 @@ angular.module('starter.controllers', []) //defining a new model | App.js is dep
         sort: $scope.form.sort
       }
     })
-    
     .then(function successCallback(response) {
       console.log("SEARCH FUNCTION CALLED");
       console.log("name: " + $scope.form.name);
@@ -31,15 +33,12 @@ angular.module('starter.controllers', []) //defining a new model | App.js is dep
       console.log("abv: " + $scope.form.abv);
       console.log("order: " + $scope.form.order);
       console.log("sort: " + $scope.form.sort);
-      BeerData.data = response.data;                                      // save the response data in the factory
-      $state.go('app.beers');                                             // go to the beer results state
-    });      
+      BeerData.data = response.data;                                      
+      $state.go('app.beers');                                             
+    })
   }
 })
 
-.factory('BeerData', function() {
-  return {data: {}};
-})
 
 
 .controller('BeersCtrl', function($scope, BeerData) {
